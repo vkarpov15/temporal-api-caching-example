@@ -1,0 +1,45 @@
+{
+  "name": "temporal-hello-world",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc --build",
+    "build.watch": "tsc --build --watch",
+    "lint": "eslint .",
+    "query-workflow": "ts-node src/clients/query-workflow.ts",
+    "start": "ts-node src/worker.ts",
+    "start.watch": "nodemon src/worker.ts",
+    "start-workflow": "ts-node src/clients/start-workflow.ts",
+    "test": "mocha ./lib/test/*.test.js"
+  },
+  "nodemonConfig": {
+    "execMap": {
+      "ts": "ts-node"
+    },
+    "ext": "ts",
+    "watch": [
+      "src"
+    ]
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "nanoid": "3.x",
+    "temporal-time-utils": "^0.0.5",
+    "temporalio": "0.20.x"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.0",
+    "@types/mocha": "9.1.1",
+    "@types/sinon": "10.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-deprecation": "^1.2.1",
+    "mocha": "9.2.2",
+    "nodemon": "^2.0.12",
+    "sinon": "13.0.2",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.4.2"
+  }
+}
