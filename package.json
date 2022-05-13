@@ -10,6 +10,7 @@
     "start": "ts-node src/worker.ts",
     "start.watch": "nodemon src/worker.ts",
     "start-workflow": "ts-node src/clients/start-workflow.ts",
+    "stop-workflow": "ts-node src/clients/stop-workflow.ts",
     "test": "mocha ./lib/test/*.test.js"
   },
   "nodemonConfig": {
@@ -23,8 +24,6 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "nanoid": "3.x",
-    "temporal-time-utils": "^0.0.5",
     "temporalio": "0.20.x"
   },
   "devDependencies": {
