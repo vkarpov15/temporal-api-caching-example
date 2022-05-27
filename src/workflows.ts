@@ -35,8 +35,7 @@ export async function exchangeRatesWorkflow(storedRatesByDay: Array<[string, any
     const tomorrow = new Date(today);
     tomorrow.setHours(12, 0, 0, 0);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    // @ts-ignore
-    await sleep(tomorrow - today);
+    await sleep(tomorrow.valueOf() - today.valueOf());
   }
 
   await continueAsNew<typeof exchangeRatesWorkflow>(Array.from(ratesByDay.entries()));
