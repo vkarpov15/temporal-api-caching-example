@@ -2,3 +2,5 @@
 export function toYYYYMMDD(date: Date): string {
   return date.toLocaleDateString('en-GB').split('/').reverse().join('');
 }
+
+export type ExchangeRatesType = { [key: string]: number };

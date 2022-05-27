@@ -14,7 +14,7 @@ describe('example workflow', function () {
   let client: WorkflowClient;
   let handle: WorkflowHandle;
   let shutdown: () => Promise<void>;
-  let execute: () => ReturnType<typeof exchangeRatesWorkflow>;
+  let execute: () => Promise<WorkflowHandle>;
 
   this.slow(5000);
 

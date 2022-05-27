@@ -5,7 +5,7 @@ import {
   setHandler,
   sleep
 } from '@temporalio/workflow';
-import { toYYYYMMDD } from './shared';
+import { toYYYYMMDD, ExchangeRatesType } from './shared';
 import type * as activities from './activities';
 
 const { getExchangeRates } = proxyActivities<typeof activities>({
@@ -15,10 +15,11 @@ const { getExchangeRates } = proxyActivities<typeof activities>({
 const maxNumRates = 30;
 const maxIterations = 10000;
 
-export const getExchangeRatesQuery = defineQuery<any, [string]>('getExchangeRates');
+export const getExchangeRatesQuery =
+  defineQuery<ExchangeRatesType | undefined, [string]>('getExchangeRates');
 
-export async function exchangeRatesWorkflow(storedRatesByDay: Array<[string, any]> = []): Promise<any> {
-  const ratesByDay = new Map<string, any>(storedRatesByDay);
+export async function exchangeRatesWorkflow(storedRatesByDay: Array<[string, ExchangeRatesType]> = []): Promise<void> {
+  const ratesByDay = new Map<string, ExchangeRatesType>(storedRatesByDay);
   setHandler(getExchangeRatesQuery, (date: string) => ratesByDay.get(date));
 
   for (let i = 0; i < maxIterations; ++i) {
