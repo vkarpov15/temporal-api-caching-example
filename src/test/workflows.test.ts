@@ -1,5 +1,6 @@
-import { WorkflowClient, WorkflowHandle } from '@temporalio/client';
+import { TestWorkflowEnvironment } from '@temporalio/testing';
 import { Runtime, DefaultLogger, Worker } from '@temporalio/worker';
+import { WorkflowClient, WorkflowHandle } from '@temporalio/client';
 import assert from 'assert';
 import axios from 'axios';
 import { after, afterEach, before, describe, it } from 'mocha';
@@ -15,6 +16,7 @@ describe('example workflow', function () {
   let handle: WorkflowHandle;
   let shutdown: () => Promise<void>;
   let execute: () => Promise<WorkflowHandle>;
+  let env: TestWorkflowEnvironment;
 
   this.slow(5000);
 
@@ -22,7 +24,9 @@ describe('example workflow', function () {
     this.timeout(10 * 1000);
     // Filter INFO log messages for clearer test output
     Runtime.install({ logger: new DefaultLogger('WARN') });
+    env = await TestWorkflowEnvironment.create();
     const worker = await Worker.create({
+      connection: env.nativeConnection,
       taskQueue,
       workflowsPath: require.resolve('../workflows'),
       activities,
@@ -36,7 +40,7 @@ describe('example workflow', function () {
   });
 
   beforeEach(async () => {
-    client = new WorkflowClient();
+    client = env.workflowClient;
     await client.getHandle('exchange-rates-workflow').terminate().catch(() => {});
 
     execute = async () => {
@@ -51,6 +55,8 @@ describe('example workflow', function () {
 
   after(async () => {
     await shutdown();
+
+    await env.teardown();
   });
 
   afterEach(async () => {
@@ -74,7 +80,6 @@ describe('example workflow', function () {
     const handle = await execute();
     await waitForHTTPRequest;
     const result = await handle.query(getExchangeRatesQuery, toYYYYMMDD(new Date()));
-    console.log(result);
     assert.deepEqual(result, { AUD: 1.1 });
 
     await handle.cancel();

@@ -24,9 +24,10 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "temporalio": "0.20.x"
+    "temporalio": "1.0.0-rc.0"
   },
   "devDependencies": {
+    "@temporalio/testing": "1.0.0-rc.0",
     "@tsconfig/node16": "^1.0.0",
     "@types/mocha": "9.1.1",
     "@types/sinon": "10.0.11",
